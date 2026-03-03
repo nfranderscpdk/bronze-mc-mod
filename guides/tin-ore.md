@@ -4,7 +4,7 @@
 - Minecraft/Fabric 1.21+ requires registry keys on both block and item settings.
 - Tin Ore is added to creative inventory explicitly via Fabric item group events.
 - Mining behavior is set through `AbstractBlock.Settings` during registration.
-- Tool tags are in `data/minecraft/tags/block/...` (not under `data/bronze`).
+- **Tool tags are in `data/minecraft/tags/block/...` (singular `block`, not `blocks`).**
 
 ## Current Implementation (Reference)
 
@@ -20,8 +20,9 @@
 ### 2) Set mining behavior in registration settings
 - Build `TinOre` from configured settings, not by mutating inside `TinOre`.
 - Use:
-  - `AbstractBlock.Settings.copy(Blocks.IRON_ORE)`
-  - `.strength(3.0F, 3.0F)`
+  - `AbstractBlock.Settings.create()` or `.copy(Blocks.IRON_ORE)`
+  - `.strength(3.0F, 3.0F)` for mining speed
+  - `.requiresTool()` to prevent drops without correct tool
 - `TinOre` class should remain a thin wrapper over `Block`.
 
 ### 3) Add Tin Ore to creative inventory
@@ -48,10 +49,10 @@ Current item model format:
 ```
 
 ### 5) Add loot table + mining tags
-Notice the confusion round plural vs singular in loot table vs tags and block vs blocks:
+**Correct directory structure: `data/minecraft/tags/block/` (singular `block`)**
 
 - Loot table:
-  - `src/main/resources/data/bronze/loot_table/blocks/tin_ore.json`
+  - `src/main/resources/data/bronze/loot_tables/blocks/tin_ore.json`
 - Mining tags:
   - `src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json`
   - `src/main/resources/data/minecraft/tags/block/needs_stone_tool.json`
@@ -60,7 +61,7 @@ Notice the confusion round plural vs singular in loot table vs tags and block vs
 - Check block appears in creative inventory tab.
 - Confirm correct item icon/model in inventory.
 - Confirm mining speed/tool requirement behaves like an ore block.
-- Confirm block drops itself (or desired loot outcome).
+- Confirm block drops correct loot (or desired outcome).
 
 ## Optional Next Step
 - Add overworld worldgen later (configured + placed feature + biome placement), once base block behavior is finalized.

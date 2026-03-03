@@ -26,12 +26,19 @@ public class Bronze implements ModInitializer {
                     .mapColor(Blocks.IRON_ORE.getDefaultMapColor())
                     .instrument(Blocks.IRON_ORE.getDefaultState().getInstrument())
                     .strength(3.0F, 3.0F)
+                    .requiresTool()
     );
+
+    public static final Item RAW_TIN = registerItem("raw_tin", RawTin::new, new Item.Settings());
 
     @Override
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
                 .register(entries -> entries.add(TIN_ORE));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+                .register(entries -> entries.add(RAW_TIN));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
+                .register(entries -> entries.add(RAW_TIN));
     }
 
     private static Block registerBlockWithItem(
@@ -46,5 +53,18 @@ public class Bronze implements ModInitializer {
         RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
         Registry.register(Registries.ITEM, id, new BlockItem(block, new Item.Settings().registryKey(itemKey)));
         return block;
+    }
+
+    private static Item registerItem(
+            String name,
+            Function<Item.Settings, Item> factory,
+            Item.Settings settings
+    ) {
+        Identifier id = Identifier.of(MOD_ID, name);
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
+        Item item = factory.apply(settings.registryKey(key));
+
+        Registry.register(Registries.ITEM, id, item);
+        return item;
     }
 }
