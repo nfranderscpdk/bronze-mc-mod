@@ -1,30 +1,66 @@
-# Tin Ore Implementation Plan
+# Tin Ore Implementation Guide (Updated)
 
-## Checklist
-- [ ] Confirm where blocks/items are registered in the mod entrypoint.
-- [ ] Register the `TinOre` block and its `BlockItem`.
-- [ ] Add assets: blockstate, models, textures, and lang entry.
-- [ ] Add data: loot table and tags.
-- [ ] Decide on worldgen and add configured/placed features if needed.
-- [ ] Validate via data generation and a quick in-game check.
+## What Changed From The Original Plan
+- Minecraft/Fabric 1.21+ requires registry keys on both block and item settings.
+- Tin Ore is added to creative inventory explicitly via Fabric item group events.
+- Mining behavior is set through `AbstractBlock.Settings` during registration.
+- Tool tags are in `data/minecraft/tags/block/...` (not under `data/bronze`).
 
-## Steps
-1. Identify the registration pattern used in the project (entrypoint or helper class).
-2. Register the `TinOre` block and add it to any creative tab if used.
-3. Register a `BlockItem` for `TinOre` with matching identifier.
-4. Create assets under `src/main/resources/assets/bronze`:
-   - `blockstates/tin_ore.json`
-   - `models/block/tin_ore.json`
-   - `models/item/tin_ore.json`
-   - `textures/block/tin_ore.png`
-   - `lang/en_us.json` entry
-5. Add data under `src/main/resources/data/bronze`:
-   - `loot_tables/blocks/tin_ore.json`
-   - `tags/blocks/pickaxe_mineable.json` (and `needs_stone_tool.json` if required)
-6. If worldgen is needed, add configured/placed features and biome modifiers or Fabric API worldgen setup.
-7. Run data generation (if used) and verify the block appears in-game with correct drops.
+## Current Implementation (Reference)
 
-## Notes
-- If you use data generation, add `TinOre` to the generator setup (block state, model, loot).
-- Keep identifiers consistent (e.g., `bronze:tin_ore`).
+### 1) Register block + block item in `Bronze.java`
+- File: `src/main/java/dk/codingpirates/randers/bronze/Bronze.java`
+- Keep registration centralized in the mod initializer.
+- Use `Identifier.of(MOD_ID, "tin_ore")`.
+- Create and assign:
+  - `RegistryKey<Block>` for block settings (`settings.registryKey(blockKey)`)
+  - `RegistryKey<Item>` for item settings (`new Item.Settings().registryKey(itemKey)`)
+- Register both in `Registries.BLOCK` and `Registries.ITEM`.
 
+### 2) Set mining behavior in registration settings
+- Build `TinOre` from configured settings, not by mutating inside `TinOre`.
+- Use:
+  - `AbstractBlock.Settings.copy(Blocks.IRON_ORE)`
+  - `.strength(3.0F, 3.0F)`
+- `TinOre` class should remain a thin wrapper over `Block`.
+
+### 3) Add Tin Ore to creative inventory
+- In `onInitialize()`, add Tin Ore using:
+  - `ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)`
+  - `entries.add(TIN_ORE)`
+
+### 4) Add assets
+Under `src/main/resources/assets/bronze`:
+- `blockstates/tin_ore.json`
+- `models/block/tin_ore.json`
+- `models/item/tin_ore.json`
+- `textures/block/tin_ore.png`
+- `lang/en_us.json`
+
+Current item model format:
+```json
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "bronze:block/tin_ore"
+  }
+}
+```
+
+### 5) Add loot table + mining tags
+Notice the confusion round plural vs singular in loot table vs tags and block vs blocks:
+
+- Loot table:
+  - `src/main/resources/data/bronze/loot_table/blocks/tin_ore.json`
+- Mining tags:
+  - `src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json`
+  - `src/main/resources/data/minecraft/tags/block/needs_stone_tool.json`
+
+### 6) Verify behavior
+- Check block appears in creative inventory tab.
+- Confirm correct item icon/model in inventory.
+- Confirm mining speed/tool requirement behaves like an ore block.
+- Confirm block drops itself (or desired loot outcome).
+
+## Optional Next Step
+- Add overworld worldgen later (configured + placed feature + biome placement), once base block behavior is finalized.
