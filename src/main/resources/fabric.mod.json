@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "bronze",
+  "version": "${version}",
+  "name": "bronze",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/bronze/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "dk.codingpirates.randers.bronze.client.BronzeDataGenerator"
+    ],
+    "client": [
+      "dk.codingpirates.randers.bronze.client.BronzeClient"
+    ],
+    "main": [
+      "dk.codingpirates.randers.bronze.Bronze"
+    ]
+  },
+  "mixins": [
+    "bronze.mixins.json",
+    {
+      "config": "bronze.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
