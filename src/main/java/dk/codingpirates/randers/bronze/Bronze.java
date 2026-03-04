@@ -31,14 +31,20 @@ public class Bronze implements ModInitializer {
 
     public static final Item RAW_TIN = registerItem("raw_tin", RawTin::new, new Item.Settings());
 
+    public static final Item TIN_BAR = registerItem("tin_bar", TinBar::new, new Item.Settings());
+
     @Override
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
                 .register(entries -> entries.add(TIN_ORE));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
                 .register(entries -> entries.add(RAW_TIN));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+                .register(entries -> entries.add(TIN_BAR));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
                 .register(entries -> entries.add(RAW_TIN));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
+                .register(entries -> entries.add(TIN_BAR));
     }
 
     private static Block registerBlockWithItem(

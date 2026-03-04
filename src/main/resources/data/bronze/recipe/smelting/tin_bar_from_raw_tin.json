@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient":  "bronze:raw_tin",
+  "result": { "id": "bronze:tin_bar" },
+  "experience": 0.7,
+  "cookingtime": 200
+}
+

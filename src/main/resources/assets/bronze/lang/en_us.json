@@ -1,5 +1,6 @@
 {
   "block.bronze.tin_ore": "Tin Ore",
   "item.bronze.tin_ore": "Tin Ore",
-  "item.bronze.raw_tin": "Raw Tin"
+  "item.bronze.raw_tin": "Raw Tin",
+  "item.bronze.tin_bar": "Tin Bar"
 }
