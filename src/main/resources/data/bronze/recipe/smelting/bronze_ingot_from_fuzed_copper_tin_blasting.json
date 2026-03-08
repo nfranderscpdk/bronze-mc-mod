@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient":  "bronze:fuzed_copper_tin",
+  "result": { "id": "bronze:bronze_bar" },
+  "experience": 1000,
+  "cookingtime": 600
+}
+

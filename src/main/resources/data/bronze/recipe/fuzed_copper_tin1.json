@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "CTC"
+  ],
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "T": "bronze:tin_bar"
+  },
+  "result": {
+    "id": "bronze:fuzed_copper_tin"
+  }
+}

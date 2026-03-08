@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredient":  "bronze:raw_tin",
   "result": { "id": "bronze:tin_bar" },
-  "experience": 0.7,
-  "cookingtime": 200
+  "experience": 100,
+  "cookingtime": 300
 }
 

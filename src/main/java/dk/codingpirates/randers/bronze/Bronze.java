@@ -33,6 +33,10 @@ public class Bronze implements ModInitializer {
 
     public static final Item TIN_BAR = registerItem("tin_bar", TinBar::new, new Item.Settings());
 
+    public static final Item FUZED_COPPER_TIN = registerItem("fuzed_copper_tin", FuzedCopperTin::new, new Item.Settings());
+
+    public static final Item BRONZE_BAR = registerItem("bronze_bar", BronzeBar::new, new Item.Settings());
+
     @Override
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS)
@@ -41,10 +45,16 @@ public class Bronze implements ModInitializer {
                 .register(entries -> entries.add(RAW_TIN));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
                 .register(entries -> entries.add(TIN_BAR));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS)
+                .register(entries -> entries.add(BRONZE_BAR));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
                 .register(entries -> entries.add(RAW_TIN));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
                 .register(entries -> entries.add(TIN_BAR));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH).
+                register(entries -> entries.add(FUZED_COPPER_TIN));
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SEARCH)
+                .register(entries -> entries.add(BRONZE_BAR));
     }
 
     private static Block registerBlockWithItem(
